@@ -1,0 +1,14 @@
+# Frontend / Backend Setup Instructions for testing
+
+## Setup Steps 
+
+### 1. Create the database
+    - CREATE DATABASE test;
+
+### 2. Create a User and flush privileges
+    - CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
+    - GRANT ALL PRIVILEGES ON test.* TO 'your_username'@'localhost';
+    - FLUSH PRIVILEGES;
+
+### 3. Launch SQL Script
+     - Script can be found into the project here ressources/sql/script.sql
