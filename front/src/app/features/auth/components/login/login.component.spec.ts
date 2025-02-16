@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 
 import { LoginComponent } from './login.component';
 
+
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -64,41 +65,60 @@ describe('LoginComponent', () => {
   });
 
   //=============================================================================================================
-  //==============================  Test for navigation after successful login
+  //===========Integration test : Test for navigation after successful login
   //=============================================================================================================
 
-   it('should navigate to sessions page on successful login', () => {
+  it('should navigate to sessions page on successful login', () => {
+    
+    // Setup mocks
 
-    authServiceMock.login.mockReturnValue(of({ userId: '1', token: 'abc' }));     // Mock the login method of authService to simulate a successful login response
-    component.form.setValue({ email: 'toto3@toto.com', password: 'test!1234' });  // Set valid credentials in the form
-    component.submit();                                                           // Call the submit method
+    authServiceMock.login.mockReturnValue(of({ userId: '1', token: 'test' }));  // Moock the Login method to return a successful login response
+    const sessionService = jest.spyOn(TestBed.inject(SessionService),'logIn');  // Create a spy to watch if the SessionService.logIn method is called
 
-    expect(component.form.valid).toBeTruthy();                                    // Check if the form is valid  
-    expect(authServiceMock.login).toHaveBeenCalled();                             // Check if the login method was called
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/sessions']);              // Check if you can navigate to the '/sessions' page after successful login
-  });
+    // Set form values for testing
+    component.form.setValue({ 
+        email: 'test@test.com', 
+        password: 'test!1234' 
+    });
+    component.submit();                                               // Trigger the submit function 
+
+    expect(component.form.valid).toBeTruthy();                        // Check if the form is valid
+    expect(authServiceMock.login).toHaveBeenCalled();                 // Check if the login method was called
+    expect(sessionService).toHaveBeenCalled();                        // Check if the SessionService.logIn method was called
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/sessions']);  // Check if the router navigated to the sessions page
+});
 
   //=============================================================================================================
-  //==============================  Test for error handling when login fails
+  //===========Integration test : Test for error handling when login fails
   //=============================================================================================================
 
-  it('should set onError to true on login failure', () => {
+  it('should set onError to true on login failure and check correct error message', () => {
+
+    // Setup mocks
     authServiceMock.login.mockReturnValue(throwError(() => new Error('Invalid credentials')));     // Mock the login method of authService to simulate a login failure response
-    component.form.setValue({ email: 'toto3@toto.com', password: 'test!1234' });                   // Set valid credentials in the form
-    component.submit();                                                                            // Trigger the submit function
-    fixture.detectChanges();                                                                       // Update view with validation feedback
+    
+    // Set form values for testing
+    component.form.setValue({
+        email: 'test@test.com',
+        password: 'test!1234'
+    });                   
 
-    expect(component.form.valid).toBeTruthy();                                                    // Check if the form is valid               
-    const errorMsg = fixture.debugElement.query(By.css('.error'));                                // Check if the error message is displayed
-    expect(component.onError).toBeTruthy();                                                       // Check if the onError property is set to true
-    expect(errorMsg.nativeElement.textContent).toContain('An error occurred');                    // Check if the error message contains the correct text
+    component.submit();                                                                  // Trigger the submit function
+    
+    fixture.detectChanges();                                                             // Update view with validation feedback
+
+    expect(component.form.valid).toBeTruthy();                                           // Check if the form is valid               
+    const errorMsg = fixture.debugElement.query(By.css('.error'));                       // Find the error message element using the 'error' CSS class
+    
+    expect(component.onError).toBeTruthy();                                              // Check if the onError property is set to true
+    expect(errorMsg.nativeElement.textContent).toContain('An error occurred');           // Check if the error message contains the correct text
   });
 
   //=============================================================================================================
-  //==============================  Check if a field is left empty
+  //=========== Unit test :  Check if a field is left empty
   //=============================================================================================================
 
-  it('should display red color on empty and touched email and password field', () => {
+   it('should display red color on empty and touched email and password field', () => {
 
     //===========================================================
     //======================== Email field test
@@ -128,7 +148,7 @@ describe('LoginComponent', () => {
     expect(passwordInput.nativeElement.classList.contains('ng-invalid')).toBeTruthy();
     expect(passwordInput.nativeElement.classList.contains('ng-touched')).toBeTruthy();
 
-  });
+   });
 
 
 

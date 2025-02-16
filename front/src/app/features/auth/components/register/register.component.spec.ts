@@ -60,13 +60,16 @@ describe('RegisterComponent', () => {
   });
 
   //=============================================================================================================
-  //==============================  Function to test registration
+  //==============================  Integration test : Function to test registration including error handling
   //============================================================================================================= 
 
   function testAccountCreation(formData: any, shouldSucceed: boolean) {
 
+    // Mock the register service response based on shouldSucceed parameter
     authServiceMock.register.mockReturnValue(shouldSucceed ? of({}) : throwError(() => new Error('Failed to register')));
+    
     component.form.setValue(formData);
+
     component.submit();
     fixture.detectChanges();
 
@@ -126,7 +129,7 @@ describe('RegisterComponent', () => {
   });
   
 //=============================================================================================================
-//==============================  Function to test each field
+//===  Unit test : Function to test each field of the form with error handling (Based on the same logic of login test)
 //=============================================================================================================
 
 function testInputField(fieldName: string, fieldValue: string, expectedValidity: boolean) {
