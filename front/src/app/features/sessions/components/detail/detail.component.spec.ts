@@ -26,8 +26,6 @@ describe('DetailComponent', () => {
   let mockActivatedRoute: any;
   let mockSnackBar: any;
 
-  let windowSpy: jest.SpyInstance;
-
   const mockSessionService = {
     sessionInformation: {
       admin: true,
@@ -46,7 +44,6 @@ describe('DetailComponent', () => {
   const mockTeacherService = {
     detail: jest.fn().mockReturnValue(of(mockTeacher))
   };
-
 
   beforeEach(async () => {
     mockSessionApiService = {
@@ -75,7 +72,6 @@ describe('DetailComponent', () => {
         }
       }
     };
-
 
     await TestBed.configureTestingModule({
       
@@ -107,7 +103,6 @@ describe('DetailComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    windowSpy = jest.spyOn(window.history, 'back');
   });
 
   it('should create', () => {
@@ -119,8 +114,9 @@ describe('DetailComponent', () => {
   //============================================================================= 
 
   it('should call window.history.back when back is called', () => {
+    const historySpy = jest.spyOn(window.history, 'back');  // Spy on window.history.back
     component.back();
-    expect(windowSpy).toHaveBeenCalled();
+    expect(historySpy).toHaveBeenCalled();                  // Verify that window.history.back was called
   });
 
   //============================================================================= 
@@ -129,58 +125,58 @@ describe('DetailComponent', () => {
 
   it('Delete button only visible if admin then trigger delete', () => {
     
-    const deleteSpy = jest.spyOn(component, 'delete');
-    const deleteButton = fixture.debugElement.query(By.css('button[mat-raised-button][color="warn"]'));
-    expect(deleteButton).toBeTruthy();
+    const deleteSpy = jest.spyOn(component, 'delete');                                                    // Spy on delete method
+    const deleteButton = fixture.debugElement.query(By.css('button[mat-raised-button][color="warn"]'));   // Get the delete button
+    expect(deleteButton).toBeTruthy();                                                                    // Expect that the delete button is visible
 
-    deleteButton.nativeElement.click();
-    fixture.detectChanges();
-    expect(deleteSpy).toHaveBeenCalled();
-    expect(mockSnackBar.open).toHaveBeenCalledWith('Session deleted !', 'Close', { duration: 3000 });
+    deleteButton.nativeElement.click();                                                                   // Simulate click on delete button 
+    fixture.detectChanges();                                                                              // Trigger change detection 
+    expect(deleteSpy).toHaveBeenCalled();                                                                 // Expect that the delete method was called
+    expect(mockSnackBar.open).toHaveBeenCalledWith('Session deleted !', 'Close', { duration: 3000 });     // Expect that the snack bar was opened
 
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['sessions']);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['sessions']);                                       // Expect that the router navigated to the sessions page
   });
 
   //============================================================================= 
   //  Integration Test for Participation and Unparticipation
   //============================================================================= 
 
-  it('should handle participation and then unparticipation correctly', () => {
+  it('should handle participation then unparticipation', () => {
 
-    // Initial state for participation
-    component.isAdmin = false;
-    component.isParticipate = false;  // Initially not participating
-    fixture.detectChanges();
+    // Initial state setup
+    component.isAdmin = false;                                                                                  // Set admin status to false
+    component.isParticipate = false;                                                                            // Set initial participation status to false
+    fixture.detectChanges();                                                                                    // Update view with initial state
   
-    // Spy on participate and unParticipate methods
-    const participateSpy = jest.spyOn(component, 'participate');
-    const unParticipateSpy = jest.spyOn(component, 'unParticipate');
+    // Setup method spies
+    const participateSpy = jest.spyOn(component, 'participate');                                                // Create spy for participate method
+    const unParticipateSpy = jest.spyOn(component, 'unParticipate');                                            // Create spy for unParticipate method
   
-    // Simulate participation
-    let participateButton = fixture.debugElement.query(By.css('button[mat-raised-button][color="primary"]'));
-    expect(participateButton).toBeTruthy();
-    participateButton.nativeElement.click();
-    fixture.detectChanges();
+    // Test participation flow
+    const participateButton = fixture.debugElement.query(By.css('button[mat-raised-button][color="primary"]')); // Find the participate button in DOM
+    expect(participateButton).toBeTruthy();                                                                     // Expect that the participate button exists
+    participateButton.nativeElement.click();                                                                    // Trigger click event on participate button
+    fixture.detectChanges();                                                                                    // Update view after participation
   
-    // Check participation actions
-    expect(participateSpy).toHaveBeenCalled();
-    expect(mockSessionApiService.participate).toHaveBeenCalledWith('1', '1');
-    expect(mockSessionApiService.detail).toHaveBeenCalled();
+    // Verify participation actions
+    expect(participateSpy).toHaveBeenCalled();                                                                  // Expect that the participate method was triggered
+    expect(mockSessionApiService.participate).toHaveBeenCalledWith('1', '1');                                   // Expect that the API call was made with correct session and user IDs
+    expect(mockSessionApiService.detail).toHaveBeenCalled();                                                    // Expect that the session details were refreshed
   
-    // Change state to reflect participation
-    component.isParticipate = true;
-    fixture.detectChanges();
+    // Update participation state
+    component.isParticipate = true;                                                                             // Update participation status to true
+    fixture.detectChanges();                                                                                    // Update view with new participation state
   
-    // Simulate unparticipation
-    let unParticipateButton = fixture.debugElement.query(By.css('button[mat-raised-button][color="warn"]'));
-    expect(unParticipateButton).toBeTruthy();
-    unParticipateButton.nativeElement.click();
-    fixture.detectChanges();
+    // Test unparticipation flow
+    const unParticipateButton = fixture.debugElement.query(By.css('button[mat-raised-button][color="warn"]'));  // Find the unparticipate button in DOM (HTML)
+    expect(unParticipateButton).toBeTruthy();                                                                   // Expect that the unparticipate button exists
+    unParticipateButton.nativeElement.click();                                                                  // Trigger click event on unparticipate button
+    fixture.detectChanges();                                                                                    // Update view after unparticipation
   
-    // Check unparticipation actions
-    expect(unParticipateSpy).toHaveBeenCalled();
-    expect(mockSessionApiService.unParticipate).toHaveBeenCalledWith('1', '1');
-    expect(mockSessionApiService.detail).toHaveBeenCalled();
+    // Verify unparticipation actions
+    expect(unParticipateSpy).toHaveBeenCalled();                                                                // Expect that the   unParticipate method was triggered
+    expect(mockSessionApiService.unParticipate).toHaveBeenCalledWith('1', '1');                                 // Expect that the API call was made with correct session and user IDs
+    expect(mockSessionApiService.detail).toHaveBeenCalled();                                                    // Expect that the session details were refreshed
   });
 
 
