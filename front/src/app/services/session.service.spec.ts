@@ -17,10 +17,12 @@ describe('SessionService', () => {
   });
 
   //==================================================================================
-  //  Check the 'logIn' method
+  //  Unit test : logIn method then logOut method
   //==================================================================================
 
   it('should handle login and update isLogged status', () => {
+
+    // Mock the sessionInformation object
     const testUser: SessionInformation = {
       token: 'TestToken',
       type: 'Test',
@@ -30,22 +32,23 @@ describe('SessionService', () => {
       lastName: 'Titi',
       admin: false
     };
-    service.logIn(testUser);
+
+    // Login method test
+
+    service.logIn(testUser);                              // Call the logIn method
     service.$isLogged().subscribe(isLogged => {
-      expect(isLogged).toBe(true);
+      expect(isLogged).toBe(true);                        // Check if the isLogged status is true
     });
-    expect(service.sessionInformation).toEqual(testUser);
+    expect(service.sessionInformation).toEqual(testUser); //  Check if the sessionInformation is equal to the testUser
+
+    // Logout method test
+
+    service.logOut();                                     // Call the logOut method
+    service.$isLogged().subscribe(isLogged => {
+      expect(isLogged).toBe(false);                       // Check if the isLogged status is false
+    });
+    expect(service.sessionInformation).toBeUndefined();   // Check if the sessionInformation is undefined
+
   });
 
-  //==================================================================================
-  //  Check the 'logOut' method
-  //==================================================================================
-
-  it('should handle logout and update isLogged status', () => {
-    service.logOut();
-    service.$isLogged().subscribe(isLogged => {
-      expect(isLogged).toBe(false);
-    });
-    expect(service.sessionInformation).toBeUndefined();
-  });
 });

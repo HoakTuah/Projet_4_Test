@@ -26,9 +26,12 @@ describe('UserService', () => {
   //==================================================================================
 
   it('should retrieve a user by ID', (done) => {
-    const mockUser = { id: '1'};
+
+    const mockUser = { id: '1'};    // Mock the user with id 1
+
     service.getById('1').subscribe({
       next: user => {
+        console.log('Received user:', user);
         expect(user.id).toBe('1')
         done();
       },
@@ -37,6 +40,7 @@ describe('UserService', () => {
     const req = httpTestingController.expectOne('api/user/1');  // Setup an HTTP GET request to 'api/user/1'
     expect(req.request.method).toBe('GET');                     // Expect a GET request to 'api/user/1'
     req.flush(mockUser);                                        // simulating a successful server response with mockUser 
+    httpTestingController.verify();                             // Verify that the HTTP request was made
   });
 
   //==================================================================================
@@ -44,6 +48,7 @@ describe('UserService', () => {
   //==================================================================================
 
   it('should delete a user by ID', (done) => {
+    
     service.delete('1').subscribe(response => {
       expect(response).toEqual({ message: 'User deleted' });
       done();
@@ -52,6 +57,7 @@ describe('UserService', () => {
     const req = httpTestingController.expectOne('api/user/1');  // Setup an HTTP DELETE request to 'api/user/1'
     expect(req.request.method).toBe('DELETE');                  // Expect a DELETE request to 'api/user/1'
     req.flush({ message: 'User deleted' });                     // simulating a successful server response with { message: 'User deleted' }
+    httpTestingController.verify();                             // Verify that the HTTP request was made
   });
 
 
