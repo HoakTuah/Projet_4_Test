@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 describe('Login page', () => {
   beforeEach(() => {
     cy.visit('/login');               // Before each test, visit the login page

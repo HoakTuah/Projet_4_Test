@@ -1,4 +1,3 @@
-/// <reference types="Cypress" />
 
 describe('Register page', () => {
   beforeEach(() => {
@@ -23,9 +22,9 @@ describe('Register page', () => {
     }).as('register');
 
     // Fill the registration form
-    cy.get('input[formControlName=email]').type('yoga@studio.com');
     cy.get('input[formControlName=firstName]').type('firstName');
     cy.get('input[formControlName=lastName]').type('lastName');
+    cy.get('input[formControlName=email]').type('yoga@studio.com');
     cy.get('input[formControlName=password]').type(`${'test!1234'}{enter}{enter}`);
 
     cy.wait('@register').then(({ response }) => {
@@ -48,9 +47,9 @@ describe('Register page', () => {
     }).as('registerError');
 
     // Fill the registration form with existing email
-    cy.get('input[formControlName=email]').type('existing@studio.com');
     cy.get('input[formControlName=firstName]').type('firstName');
     cy.get('input[formControlName=lastName]').type('lastName');
+    cy.get('input[formControlName=email]').type('AlreadyRegistered@test.com');
     cy.get('input[formControlName=password]').type(`${'test!1234'}{enter}{enter}`);
 
     cy.get('.error').should('be.visible');
@@ -62,24 +61,24 @@ describe('Register page', () => {
 
   it('should validate required fields', () => {
     // Test empty first name
-    cy.get('input[formControlName=email]').type('yoga@studio.com');
     cy.get('input[formControlName=lastName]').type('lastName');
+    cy.get('input[formControlName=email]').type('yoga@studio.com');
     cy.get('input[formControlName=password]').type('test!1234');
     cy.get('button[type=submit]').should('be.disabled');
 
     // Test empty last name
-    cy.get('input[formControlName=firstName]').type('firstName');
     cy.get('input[formControlName=lastName]').clear();
+    cy.get('input[formControlName=firstName]').type('firstName');
     cy.get('button[type=submit]').should('be.disabled');
 
     // Test empty email
-    cy.get('input[formControlName=lastName]').type('lastName');
     cy.get('input[formControlName=email]').clear();
+    cy.get('input[formControlName=lastName]').type('lastName');
     cy.get('button[type=submit]').should('be.disabled');
 
     // Test empty password
-    cy.get('input[formControlName=email]').type('yoga@studio.com');
     cy.get('input[formControlName=password]').clear();
+    cy.get('input[formControlName=email]').type('yoga@studio.com');
     cy.get('button[type=submit]').should('be.disabled');
   });
 
@@ -89,7 +88,7 @@ describe('Register page', () => {
 
   it('should validate email format', () => {
     // Fill form with invalid email
-    cy.get('input[formControlName=email]').type('invalid-email');
+    cy.get('input[formControlName=email]').type('Test-Mail');
     cy.get('input[formControlName=firstName]').type('firstName');
     cy.get('input[formControlName=lastName]').type('lastName');
     cy.get('input[formControlName=password]').type('test!1234');
