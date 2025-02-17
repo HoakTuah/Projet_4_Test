@@ -159,4 +159,18 @@ describe('Me Component', () => {
           cy.url().should('not.include', '/me');
         });
       });
+
+      //=================================================================================
+      // Test to display Not Found page
+      //================================================================================= 
+
+        
+        describe('should display Not Found page', () => {
+            it('should display the Not Found page', () => {
+                cy.visit('/RandomPage');
+                cy.url().should('include', '/404');
+                cy.get('h1').should('contain.text', 'Page not found');
+            });
+        }); 
+
     });
