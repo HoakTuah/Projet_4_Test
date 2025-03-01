@@ -1,3 +1,19 @@
+Yoga app
+
+Yoga app is a web application that allows users to book yoga classes. While teachers can create classes, users can book them.  
+
+Technologies used : 
+- Java 11
+- Spring Boot 2.6.1
+- Maven 3.8.1
+- MySQL 8.0
+- Angular 14.2.1
+- Cypress 10.4.0
+- Jest 28.1.3
+- Jacoco 0.8.5
+- JUnit 5.8.2
+- Mockito 4.0.0
+
 # Frontend / Backend Setup Instructions for testing
 
 ## Setup Steps 
@@ -41,3 +57,7 @@
     - To check the coverage report for frontend go to the folder /front/coverage/lcov-report/index.html
 
 ### 5. To run the backend tests :
+
+    - navigate to the back folder => cd back
+    - mvn clean test
+    - To check the coverage report for backend go to the folder /back/target/site/jacoco/index.html 
