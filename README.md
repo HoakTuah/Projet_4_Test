@@ -1,6 +1,6 @@
-Yoga app
+# Yoga app
 
-Yoga app is a web application that allows users to book yoga classes. While teachers can create classes, users can book them.  
+## Yoga app is a web application that allows users to book yoga classes. While teachers can create classes, users can book them.  
 
 Technologies used : 
 - Java 11
