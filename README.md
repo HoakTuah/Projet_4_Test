@@ -1,63 +1,81 @@
-# Yoga app
+# Yoga App
 
-## Yoga app is a web application that allows users to book yoga classes. While teachers can create classes, users can book them.  
+A web application that enables users to book yoga classes and allows teachers to create classes.
 
-Technologies used : 
+## Technologies Used
+
+### Backend
 - Java 11
 - Spring Boot 2.6.1
 - Maven 3.8.1
 - MySQL 8.0
+- JUnit 5.8.2
+- Mockito 4.0.0
+- Jacoco 0.8.5
+
+### Frontend
 - Angular 14.2.1
 - Cypress 10.4.0
 - Jest 28.1.3
-- Jacoco 0.8.5
-- JUnit 5.8.2
-- Mockito 4.0.0
 
-# Frontend / Backend Setup Instructions for testing
+## Setup Instructions
 
-## Setup Steps 
+### 1. Clone the Project
+```bash
+git clone https://github.com/HoakTuah/Projet_4_Test.git
+```
 
-### 1. Create the database
-    - CREATE DATABASE test;
+### 2. Database Setup
+1. Create the database:
+```sql
+CREATE DATABASE test;
+```
 
-### 2. Create a User and flush privileges
-    - CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
-    - GRANT ALL PRIVILEGES ON test.* TO 'your_username'@'localhost';
-    - FLUSH PRIVILEGES;
+2. Create user and set privileges:
+```sql
+CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON test.* TO 'your_username'@'localhost';
+FLUSH PRIVILEGES;
+```
 
-### 3. Launch SQL Script
-     - Script can be found into the project here ressources/sql/script.sql
+3. Initialize database:
+- Execute the SQL script located at `resources/sql/script.sql`
 
+## Running the Application
 
-## Before running the tests, you need to run the Frontend and the Backend
+### Frontend
+```bash
+cd front
+ng serve
+```
 
-### 1. To run the frontend :
+### Backend
+```bash
+cd back
+mvn spring-boot:run
+```
 
-    - navigate to the front folder => cd front
-    - ng serve
+## Testing
 
-### 2. To run the backend :
+### Frontend Tests
+1. Unit and Integration Tests:
+```bash
+cd front
+npm run test
+```
+- Coverage report: `/front/coverage/jest/lcov-report/index.html`
 
-    - navigate to the back folder => cd back
-    - mvn spring-boot:run 
+2. End-to-End Tests:
+```bash
+cd front
+npm run e2e
+```
+- Execute `FullTest.cy.ts` with Cypress
+- Coverage report: `/front/coverage/lcov-report/index.html`
 
-
-### 3. To run unit and integration tests on the frontend :
-
-    - navigate to the front folder => cd front 
-    - npm run test
-    - To check the coverage report for frontend go to the folder /front/coverage/jest/lcov-report/index.html
-
-### 4. To run end to end tests and generate a report on the frontend :
-
-    - navigate to the front folder => cd front
-    - npm run e2e
-    - execute the test "FullTest.cy.ts" with cypress
-    - To check the coverage report for frontend go to the folder /front/coverage/lcov-report/index.html
-
-### 5. To run the backend tests :
-
-    - navigate to the back folder => cd back
-    - mvn clean test
-    - To check the coverage report for backend go to the folder /back/target/site/jacoco/index.html 
+### Backend Tests
+```bash
+cd back
+mvn clean test
+```
+- Coverage report: `/back/target/site/jacoco/index.html`
