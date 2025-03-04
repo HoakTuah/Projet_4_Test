@@ -71,6 +71,11 @@ cd front
 npm run e2e
 ```
 - Execute `FullTest.cy.ts` with Cypress
+
+2. Generate e2e coverage:
+```bash
+npm run e2e:coverage
+```
 - Coverage report: `/front/coverage/lcov-report/index.html`
 
 ### Backend Tests
